@@ -23,6 +23,7 @@ class UserAccountAdmin(UserAdmin):
     fieldsets = (
         (None, {"fields": ("email", "password")}),
         ("Permissions", {"fields": ("is_staff", "is_active", "is_superuser")}),
+        ("Important Dates", {"fields": ("last_login", "date_joined")}),
     )
     add_fieldsets = (
         (
@@ -41,6 +42,7 @@ class UserAccountAdmin(UserAdmin):
         ),
     )
     search_fields = ("email",)
+    readonly_fields = ("date_joined",)
 
     ordering = ("id",)
 

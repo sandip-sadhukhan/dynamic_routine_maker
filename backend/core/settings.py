@@ -5,19 +5,21 @@ import environ
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Read .env file
-env = environ.Env(DEBUG=(bool, False),)
-environ.Env.read_env(BASE_DIR / '.env')
+env = environ.Env(
+    DEBUG=(bool, False),
+)
+environ.Env.read_env(BASE_DIR / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(' ')
+ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(" ")
 
 
 # Application definition
@@ -26,6 +28,7 @@ THIRD_PARTY_APPS = []
 
 MY_APPS = [
     "accounts.apps.AccountsConfig",
+    "routine.apps.RoutineConfig",
 ]
 
 INSTALLED_APPS = [
@@ -105,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Kolkata"
 
 USE_I18N = True
 
