@@ -1,5 +1,6 @@
 from django.db import IntegrityError
 import graphene
+import graphql_jwt
 
 from accounts.types import UserAccountType
 from accounts.models import UserAccount
@@ -27,3 +28,9 @@ class CreateUser(graphene.Mutation):
             raise e
 
         return CreateUser(user=user)
+
+
+class Mutation:
+    token_auth = graphql_jwt.ObtainJSONWebToken.Field()
+    verify_token = graphql_jwt.Verify.Field()
+    create_user = CreateUser.Field()
