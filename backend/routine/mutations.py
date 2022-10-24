@@ -148,11 +148,12 @@ class DeleteClass(graphene.Mutation):
             routine = Routine.objects.get(
                 pk=routine_id, user=info.context.user
             )
-            Class.objects.get(
-                user=info.context.user, pk=id, routine=routine
-            ).delete()
+            Class.objects.get(pk=id, routine=routine).delete()
             return DeleteRoutine(success=True)
+
         except Routine.DoesNotExist:
+            return DeleteRoutine(success=False)
+        except Class.DoesNotExist:  # type: ignore
             return DeleteRoutine(success=False)
 
 
@@ -162,3 +163,4 @@ class Mutation:
     delete_routine = DeleteRoutine.Field()
     create_class = CreateClass.Field()
     update_class = UpdateClass.Field()
+    delete_class = DeleteClass.Field()
