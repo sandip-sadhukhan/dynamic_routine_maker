@@ -1,13 +1,22 @@
 import graphene
 
 import accounts.mutations
+import routine.query
+import routine.mutations
 
 
-class Query(graphene.ObjectType):
+class Query(
+    routine.query.Query,
+    graphene.ObjectType,
+):
     pass
 
 
-class Mutation(accounts.mutations.Mutation, graphene.ObjectType):
+class Mutation(
+    accounts.mutations.Mutation,
+    routine.mutations.Mutation,
+    graphene.ObjectType,
+):
     pass
 
 

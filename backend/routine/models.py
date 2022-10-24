@@ -18,6 +18,11 @@ class Routine(BaseModel):
     def __str__(self):
         return str(self.name)
 
+    def get_classes_by_day(self, day: int):
+        return Class.objects.filter(routine=self, day=day).order_by(
+            "start_time"
+        )
+
 
 class Class(BaseModel):
     SUNDAY = 0
@@ -31,7 +36,7 @@ class Class(BaseModel):
     day_choices = (
         (SUNDAY, "Sunday"),
         (MONDAY, "Monday"),
-        (THURSDAY, "Tuesday"),
+        (TUESDAY, "Tuesday"),
         (WEDNESDAY, "Wednesday"),
         (THURSDAY, "Thursday"),
         (FRIDAY, "Friday"),
