@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import UserAccount
+from django.core.validators import MinLengthValidator
 
 
 class BaseModel(models.Model):
@@ -12,8 +13,17 @@ class BaseModel(models.Model):
 
 class Routine(BaseModel):
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100, verbose_name="Routine Name")
-    slug = models.SlugField(max_length=110, null=True, blank=True)
+    name = models.CharField(
+        max_length=100,
+        verbose_name="Routine Name",
+        validators=[MinLengthValidator(4)],
+    )
+    slug = models.SlugField(
+        max_length=110,
+        null=True,
+        blank=True,
+        validators=[MinLengthValidator(4)],
+    )
 
     def __str__(self):
         return str(self.name)
