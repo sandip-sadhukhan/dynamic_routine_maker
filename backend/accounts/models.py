@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import validate_email
 from django.contrib.auth.models import (
     AbstractBaseUser,
     PermissionsMixin,
@@ -7,9 +8,11 @@ from django.contrib.auth.models import (
 
 
 class UserAccountManager(BaseUserManager):
-    def create_user(self, email, password=None):
+    def create_user(self, email: str, password: str):
         if not email:
             raise ValueError("Users must have an email address.")
+
+        validate_email(email)
         email = self.normalize_email(email)
         user = self.model(email=email)
 
@@ -18,7 +21,7 @@ class UserAccountManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, email, password):
+    def create_superuser(self, email: str, password: str):
         user = self.create_user(email, password)
 
         user.is_superuser = True
