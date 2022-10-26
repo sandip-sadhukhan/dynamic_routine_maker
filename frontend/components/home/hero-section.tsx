@@ -13,7 +13,7 @@ import React from "react"
 
 const HeroSection: React.FC = () => {
   return (
-    <Container maxW="container.xl" centerContent>
+    <Container maxW="container.xl" centerContent id="home">
       <SimpleGrid
         columns={{ base: 1, md: 2 }}
         w="full"

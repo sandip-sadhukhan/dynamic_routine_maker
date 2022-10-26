@@ -52,7 +52,7 @@ const Navbar = () => {
             display={{ base: "none", md: "flex" }}
           >
             <Button variant="link">
-              <Link href="/" passHref>
+              <Link href="/#home" passHref>
                 Home
               </Link>
             </Button>
