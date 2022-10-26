@@ -11,7 +11,16 @@ import {
 import Image from "next/image"
 import React from "react"
 
-const HeroSection: React.FC = () => {
+interface HeroSectionProps {
+  loginOnOpen: () => void
+  signUpOnOpen: () => void
+}
+
+const HeroSection: React.FC<HeroSectionProps> = (
+  props: HeroSectionProps
+) => {
+  const { loginOnOpen, signUpOnOpen } = props
+
   return (
     <Container maxW="container.xl" centerContent id="home">
       <SimpleGrid
@@ -45,13 +54,18 @@ const HeroSection: React.FC = () => {
             exercitationem. Tenetur!
           </Text>
           <HStack mt={6} spacing={4}>
-            <Button colorScheme="messenger" px={10}>
+            <Button
+              colorScheme="messenger"
+              px={10}
+              onClick={loginOnOpen}
+            >
               Login
             </Button>
             <Button
               colorScheme="messenger"
               variant="outline"
               px={10}
+              onClick={signUpOnOpen}
             >
               SignUp
             </Button>

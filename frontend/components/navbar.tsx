@@ -17,9 +17,17 @@ import Image from "next/image"
 import Link from "next/link"
 import { HamburgerIcon } from "@chakra-ui/icons"
 
-const Navbar = () => {
+interface NavbarProps {
+  loginOnOpen: () => void
+  signUpOnOpen: () => void
+}
+
+const Navbar: React.FC<NavbarProps> = (
+  props: NavbarProps
+) => {
   const { colorMode, toggleColorMode } = useColorMode()
   const navbarBg = useColorModeValue("gray.50", "gray.700")
+  const { loginOnOpen, signUpOnOpen } = props
 
   return (
     <Box
@@ -66,13 +74,18 @@ const Navbar = () => {
                 About me
               </Link>
             </Button>
-            <Button colorScheme="messenger" size="sm">
+            <Button
+              colorScheme="messenger"
+              size="sm"
+              onClick={loginOnOpen}
+            >
               Login
             </Button>
             <Button
               colorScheme="messenger"
               variant="outline"
               size="sm"
+              onClick={signUpOnOpen}
             >
               SignUp
             </Button>
