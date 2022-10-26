@@ -1,10 +1,14 @@
+import { Divider } from "@chakra-ui/react"
 import type { NextPage } from "next"
-import Navbar from "../components/home/navbar"
+import HeroSection from "../components/home/hero-section"
+import Navbar from "../components/navbar"
 
 const Home: NextPage = () => {
   return (
     <>
       <Navbar />
+      <HeroSection />
+      <Divider />
     </>
   )
 }
