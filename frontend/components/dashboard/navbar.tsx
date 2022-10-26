@@ -16,10 +16,17 @@ import { MoonIcon, SunIcon } from "@chakra-ui/icons"
 import Image from "next/image"
 import Link from "next/link"
 import { HamburgerIcon } from "@chakra-ui/icons"
+import { useRouter } from "next/router"
 
 const Navbar: React.FC = () => {
   const { colorMode, toggleColorMode } = useColorMode()
   const navbarBg = useColorModeValue("gray.50", "gray.700")
+  const router = useRouter()
+
+  const logout = () => {
+    localStorage.removeItem("token")
+    router.push("/")
+  }
 
   return (
     <Box
@@ -53,18 +60,11 @@ const Navbar: React.FC = () => {
             spacing={6}
             display={{ base: "none", md: "flex" }}
           >
-            <Button variant="link">
-              <Link href="/" passHref>
-                Home
-              </Link>
-            </Button>
-            <Button variant="link">
-              <Link href="/dashboard" passHref>
-                Dashboard
-              </Link>
-            </Button>
-
-            <Button colorScheme="gray" size="sm">
+            <Button
+              colorScheme="gray"
+              size="sm"
+              onClick={logout}
+            >
               Logout
             </Button>
 
@@ -81,7 +81,7 @@ const Navbar: React.FC = () => {
               onClick={toggleColorMode}
             />
           </HStack>
-          <HStack display={{ base: "flex", md: "none" }}>
+          {/* <HStack display={{ base: "flex", md: "none" }}>
             <Menu>
               <MenuButton
                 as={IconButton}
@@ -121,7 +121,7 @@ const Navbar: React.FC = () => {
                 </MenuItem>
               </MenuList>
             </Menu>
-          </HStack>
+          </HStack> */}
         </HStack>
       </Container>
     </Box>

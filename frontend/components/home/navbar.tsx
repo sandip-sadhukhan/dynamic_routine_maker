@@ -5,17 +5,17 @@ import {
   Heading,
   HStack,
   IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
+  // Menu,
+  // MenuButton,
+  // MenuItem,
+  // MenuList,
   useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react"
 import { MoonIcon, SunIcon } from "@chakra-ui/icons"
 import Image from "next/image"
 import Link from "next/link"
-import { HamburgerIcon } from "@chakra-ui/icons"
+// import { HamburgerIcon } from "@chakra-ui/icons"
 
 interface NavbarProps {
   loginOnOpen?: () => void
@@ -114,7 +114,7 @@ const Navbar: React.FC<NavbarProps> = (
               onClick={toggleColorMode}
             />
           </HStack>
-          <HStack display={{ base: "flex", md: "none" }}>
+          {/* <HStack display={{ base: "flex", md: "none" }}>
             <Menu>
               <MenuButton
                 as={IconButton}
@@ -167,7 +167,7 @@ const Navbar: React.FC<NavbarProps> = (
                 </MenuItem>
               </MenuList>
             </Menu>
-          </HStack>
+          </HStack> */}
         </HStack>
       </Container>
     </Box>

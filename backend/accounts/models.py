@@ -12,7 +12,14 @@ class UserAccountManager(BaseUserManager):
         if not email:
             raise ValueError("Users must have an email address.")
 
+        if not password:
+            raise ValueError("Users must have an password.")
+
         validate_email(email)
+
+        if len(password) < 6:
+            raise ValueError("Password should be atleast 6 character long.")
+
         email = self.normalize_email(email)
         user = self.model(email=email)
 

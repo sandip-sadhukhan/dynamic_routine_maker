@@ -1,11 +1,13 @@
 import graphene
 
+import accounts.query
 import accounts.mutations
 import routine.query
 import routine.mutations
 
 
 class Query(
+    accounts.query.Query,
     routine.query.Query,
     graphene.ObjectType,
 ):

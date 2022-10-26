@@ -28,7 +28,7 @@ const RoutineBox: React.FC = () => {
   const router = useRouter()
 
   const openEditLink = () => {
-    router.push("/routine/11132")
+    router.push("/dashboard/routine/11132")
   }
 
   return (
@@ -60,7 +60,7 @@ const RoutineBox: React.FC = () => {
           </Text>
         </HStack>
         <HStack>
-          <Link href="/routine/1222" passHref>
+          <Link href="/dashboard/routine/1222" passHref>
             <a target="_blank" rel="noopener noreferrer">
               <Tooltip label="Open your public routine link">
                 <Button
@@ -73,7 +73,7 @@ const RoutineBox: React.FC = () => {
               </Tooltip>
             </a>
           </Link>
-          <Link href="/routine/1223" passHref>
+          <Link href="/dashboard/routine/1223" passHref>
             <a>
               <Tooltip label="Edit your routine">
                 <Button

@@ -45,7 +45,7 @@ const HomeDashboard: NextPage = () => {
             />
             <VStack w="full" pt={4} spacing={5}>
               {[1, 2, 3].map((ele) => (
-                <RoutineBox />
+                <RoutineBox key={ele} />
               ))}
             </VStack>
           </VStack>
