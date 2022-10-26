@@ -5,17 +5,12 @@ import {
   Heading,
   HStack,
   IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react"
 import { MoonIcon, SunIcon } from "@chakra-ui/icons"
 import Image from "next/image"
 import Link from "next/link"
-import { HamburgerIcon } from "@chakra-ui/icons"
 import { useRouter } from "next/router"
 
 const Navbar: React.FC = () => {
@@ -56,10 +51,7 @@ const Navbar: React.FC = () => {
               </Heading>
             </HStack>
           </Link>
-          <HStack
-            spacing={6}
-            display={{ base: "none", md: "flex" }}
-          >
+          <HStack spacing={6}>
             <Button
               colorScheme="gray"
               size="sm"
@@ -81,47 +73,6 @@ const Navbar: React.FC = () => {
               onClick={toggleColorMode}
             />
           </HStack>
-          {/* <HStack display={{ base: "flex", md: "none" }}>
-            <Menu>
-              <MenuButton
-                as={IconButton}
-                aria-label="Options"
-                icon={<HamburgerIcon />}
-                variant="outline"
-              />
-              <MenuList>
-                <Link href="/" passHref>
-                  <MenuItem>Home</MenuItem>
-                </Link>
-                <Link href="/dashboard" passHref>
-                  <MenuItem>Dashboard</MenuItem>
-                </Link>
-                <MenuItem>
-                  <Button
-                    colorScheme="gray"
-                    size="sm"
-                    w="full"
-                  >
-                    Logout
-                  </Button>
-                </MenuItem>
-                <MenuItem justifyContent="center">
-                  <IconButton
-                    variant="ghost"
-                    icon={
-                      colorMode === "light" ? (
-                        <MoonIcon />
-                      ) : (
-                        <SunIcon />
-                      )
-                    }
-                    aria-label="Theme Toggle"
-                    onClick={toggleColorMode}
-                  />
-                </MenuItem>
-              </MenuList>
-            </Menu>
-          </HStack> */}
         </HStack>
       </Container>
     </Box>

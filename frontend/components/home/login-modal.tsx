@@ -35,7 +35,7 @@ const LoginModal: React.FC<LoginModalProps> = (
   }
 
   const { register, handleSubmit } = useForm<IFormData>()
-  const [loginUser] = useLoginUser()
+  const [loginUser, { loading }] = useLoginUser()
 
   const onSubmit = async (formData: IFormData) => {
     try {
@@ -88,6 +88,8 @@ const LoginModal: React.FC<LoginModalProps> = (
             variant="solid"
             colorScheme="messenger"
             type="submit"
+            isLoading={loading}
+            loadingText="Logging in"
           >
             Login
           </Button>

@@ -37,8 +37,10 @@ const SignUpModal: React.FC<SignUpModalProps> = (
   }
 
   const { register, handleSubmit } = useForm<IFormData>()
-  const [createUser] = useCreateUser()
-  const [loginUser] = useLoginUser()
+  const [createUser, { loading: signUpLoading }] =
+    useCreateUser()
+  const [loginUser, { loading: loginLoading }] =
+    useLoginUser()
 
   const onSubmit = async (formData: IFormData) => {
     try {
@@ -98,6 +100,8 @@ const SignUpModal: React.FC<SignUpModalProps> = (
             type="submit"
             variant="solid"
             colorScheme="messenger"
+            isLoading={signUpLoading || loginLoading}
+            loadingText="Signing Up"
           >
             SignUp
           </Button>
