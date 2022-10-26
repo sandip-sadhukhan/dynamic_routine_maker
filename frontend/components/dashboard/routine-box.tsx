@@ -14,8 +14,13 @@ import {
 import Link from "next/link"
 import { useRouter } from "next/router"
 import React from "react"
+import { IRoutine } from "../../hooks/useGetAllRoutines"
 
-const RoutineBox: React.FC = () => {
+const RoutineBox: React.FC<IRoutine> = ({
+  id,
+  name,
+  slug,
+}) => {
   const bgColor = useColorModeValue(
     "blackAlpha.50",
     "whiteAlpha.50"
@@ -28,7 +33,7 @@ const RoutineBox: React.FC = () => {
   const router = useRouter()
 
   const openEditLink = () => {
-    router.push("/dashboard/routine/11132")
+    router.push(`/dashboard/routine/${id}`)
   }
 
   return (
@@ -55,12 +60,10 @@ const RoutineBox: React.FC = () => {
       >
         <HStack>
           <ArrowForwardIcon fontSize={20} />
-          <Text fontWeight="bold">
-            Class 1 Section B Routine
-          </Text>
+          <Text fontWeight="bold">{name}</Text>
         </HStack>
         <HStack>
-          <Link href="/dashboard/routine/1222" passHref>
+          <Link href={`/r/${slug}`} passHref>
             <a target="_blank" rel="noopener noreferrer">
               <Tooltip label="Open your public routine link">
                 <Button
@@ -73,7 +76,7 @@ const RoutineBox: React.FC = () => {
               </Tooltip>
             </a>
           </Link>
-          <Link href="/dashboard/routine/1223" passHref>
+          <Link href={`/dashboard/routine/${id}`} passHref>
             <a>
               <Tooltip label="Edit your routine">
                 <Button

@@ -12,6 +12,7 @@ import { MoonIcon, SunIcon } from "@chakra-ui/icons"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import client from "../../constants/apollo-client"
 
 const Navbar: React.FC = () => {
   const { colorMode, toggleColorMode } = useColorMode()
@@ -20,6 +21,7 @@ const Navbar: React.FC = () => {
 
   const logout = () => {
     localStorage.removeItem("token")
+    client.clearStore()
     router.push("/")
   }
 

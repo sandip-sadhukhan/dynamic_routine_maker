@@ -1,7 +1,7 @@
 import graphene
 from graphql_jwt.decorators import login_required
 
-from routine.models import Routine, Class
+from routine.models import Routine
 from routine.types import RoutineType
 
 
