@@ -168,13 +168,15 @@ const HomeDashboard: NextPage = () => {
                 variant="outline"
                 mr={3}
                 onClick={onClose}
-                isLoading={createRoutineLoading}
-                loadingText="Creating..."
-                type="submit"
               >
                 Cancel
               </Button>
-              <Button colorScheme="blue" type="submit">
+              <Button
+                colorScheme="blue"
+                type="submit"
+                isLoading={createRoutineLoading}
+                loadingText="Creating..."
+              >
                 Submit
               </Button>
             </DrawerFooter>
