@@ -18,8 +18,9 @@ import Link from "next/link"
 import { HamburgerIcon } from "@chakra-ui/icons"
 
 interface NavbarProps {
-  loginOnOpen: () => void
-  signUpOnOpen: () => void
+  loginOnOpen?: () => void
+  signUpOnOpen?: () => void
+  isAuthenticated?: boolean
 }
 
 const Navbar: React.FC<NavbarProps> = (
@@ -27,7 +28,8 @@ const Navbar: React.FC<NavbarProps> = (
 ) => {
   const { colorMode, toggleColorMode } = useColorMode()
   const navbarBg = useColorModeValue("gray.50", "gray.700")
-  const { loginOnOpen, signUpOnOpen } = props
+  const { loginOnOpen, signUpOnOpen, isAuthenticated } =
+    props
 
   return (
     <Box
@@ -39,22 +41,24 @@ const Navbar: React.FC<NavbarProps> = (
     >
       <Container maxW="container.xl" centerContent>
         <HStack w="full" justifyContent="space-between">
-          <HStack>
-            <Image
-              width={30}
-              height={30}
-              src="/favicon.png"
-              alt="Logo"
-            />
-            <Heading
-              as="h3"
-              size="md"
-              colorScheme="messenger"
-              fontSize={{ base: "md", md: "lg" }}
-            >
-              Dynamic Routine Maker
-            </Heading>
-          </HStack>
+          <Link href="/" passHref>
+            <HStack cursor="pointer">
+              <Image
+                width={30}
+                height={30}
+                src="/favicon.png"
+                alt="Logo"
+              />
+              <Heading
+                as="h3"
+                size="md"
+                colorScheme="messenger"
+                fontSize={{ base: "md", md: "lg" }}
+              >
+                Dynamic Routine Maker
+              </Heading>
+            </HStack>
+          </Link>
           <HStack
             spacing={6}
             display={{ base: "none", md: "flex" }}
@@ -74,21 +78,29 @@ const Navbar: React.FC<NavbarProps> = (
                 About me
               </Link>
             </Button>
-            <Button
-              colorScheme="messenger"
-              size="sm"
-              onClick={loginOnOpen}
-            >
-              Login
-            </Button>
-            <Button
-              colorScheme="messenger"
-              variant="outline"
-              size="sm"
-              onClick={signUpOnOpen}
-            >
-              SignUp
-            </Button>
+            {isAuthenticated ? (
+              <Button colorScheme="gray" size="sm">
+                Logout
+              </Button>
+            ) : (
+              <>
+                <Button
+                  colorScheme="messenger"
+                  size="sm"
+                  onClick={loginOnOpen}
+                >
+                  Login
+                </Button>
+                <Button
+                  colorScheme="messenger"
+                  variant="outline"
+                  size="sm"
+                  onClick={signUpOnOpen}
+                >
+                  SignUp
+                </Button>
+              </>
+            )}
             <IconButton
               variant="ghost"
               icon={

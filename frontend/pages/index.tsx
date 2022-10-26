@@ -6,7 +6,7 @@ import HeroSection from "../components/home/hero-section"
 import HowToUse from "../components/home/how-to-use"
 import LoginModal from "../components/home/login-modal"
 import SignUpModal from "../components/home/signup-modal"
-import Navbar from "../components/navbar"
+import Navbar from "../components/home/navbar"
 
 const Home: NextPage = () => {
   const {
