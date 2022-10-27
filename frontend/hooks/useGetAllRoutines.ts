@@ -6,7 +6,7 @@ export interface IRoutine {
   slug: string
 }
 
-interface IRoutineWrapper {
+export interface IRoutineWrapper {
   routines: IRoutine[]
 }
 

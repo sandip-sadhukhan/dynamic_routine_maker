@@ -110,7 +110,11 @@ const HomeDashboard: NextPage = () => {
             />
             <VStack w="full" pt={4} spacing={5}>
               {routines.map((routine) => (
-                <RoutineBox key={routine.id} {...routine} />
+                <RoutineBox
+                  key={routine.id}
+                  {...routine}
+                  refetch={refetch}
+                />
               ))}
             </VStack>
           </VStack>
