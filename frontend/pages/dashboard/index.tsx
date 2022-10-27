@@ -81,7 +81,7 @@ const HomeDashboard: NextPage = () => {
   return (
     <>
       <Navbar />
-      <Container maxW="container.xl" centerContent>
+      <Container maxW="container.md" centerContent>
         {routines.length > 0 ? (
           <VStack align="start" w="full" my={10}>
             <HStack
