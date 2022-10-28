@@ -41,12 +41,12 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import Navbar from "../../../components/dashboard/navbar"
-import LoadingSpinner from "../../../components/loading-spinner"
+import Navbar from "../../../../components/dashboard/navbar"
+import LoadingSpinner from "../../../../components/loading-spinner"
 import useGetRoutine, {
   IRoutine,
-} from "../../../hooks/useGetRoutine"
-import useUpdateRoutine from "../../../hooks/useUpdateRoutine"
+} from "../../../../hooks/useGetRoutine"
+import useUpdateRoutine from "../../../../hooks/useUpdateRoutine"
 
 const RoutinePage: NextPage = () => {
   const router = useRouter()
@@ -113,7 +113,7 @@ const RoutinePage: NextPage = () => {
                 Dashboard
               </BreadcrumbLink>
             </BreadcrumbItem>
-            <BreadcrumbItem>
+            <BreadcrumbItem cursor="pointer">
               <BreadcrumbLink
                 as={Link}
                 href={`/dashboard/routine/${routineId}`}
@@ -192,13 +192,17 @@ const RoutinePage: NextPage = () => {
                             }
                           </Td>
                           <Td>
-                            <Button
-                              size="sm"
-                              colorScheme="whatsapp"
-                              variant="outline"
+                            <Link
+                              href={`/dashboard/routine/${routineId}/${day}/edit`}
                             >
-                              View / Edit
-                            </Button>
+                              <Button
+                                size="sm"
+                                colorScheme="whatsapp"
+                                variant="outline"
+                              >
+                                View / Edit
+                              </Button>
+                            </Link>
                           </Td>
                         </Tr>
                       )
