@@ -4,15 +4,26 @@ import {
   SettingsIcon,
 } from "@chakra-ui/icons"
 import {
+  Box,
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   Button,
   Container,
   Divider,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  Flex,
+  FormLabel,
   Heading,
   HStack,
   IconButton,
+  Input,
   Table,
   TableContainer,
   Tbody,
@@ -21,31 +32,68 @@ import {
   Thead,
   Tooltip,
   Tr,
+  useDisclosure,
+  useToast,
   VStack,
 } from "@chakra-ui/react"
 import type { NextPage } from "next"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
 import Navbar from "../../../components/dashboard/navbar"
 import LoadingSpinner from "../../../components/loading-spinner"
 import useGetRoutine, {
   IRoutine,
 } from "../../../hooks/useGetRoutine"
+import useUpdateRoutine from "../../../hooks/useUpdateRoutine"
 
 const RoutinePage: NextPage = () => {
   const router = useRouter()
   const routineId = router.query.routineId as string
   const { data, loading } = useGetRoutine(routineId)
   const [routine, setRoutine] = useState<IRoutine>()
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [updateRoutine, { loading: updateRoutineLoading }] =
+    useUpdateRoutine()
+  const toast = useToast()
 
   useEffect(() => {
     if (!data) return
 
-    console.log(data)
-
     setRoutine(data.routineById)
+    setValue("name", data.routineById.name || "")
   }, [data, loading])
+
+  interface IFormData {
+    name: string
+  }
+
+  const { register, handleSubmit, setValue } =
+    useForm<IFormData>()
+
+  const onSubmit = async (data: IFormData) => {
+    try {
+      const routine = await updateRoutine({
+        variables: { id: routineId, name: data.name },
+      })
+
+      // const refetchRes = await refetch()
+      setRoutine(routine.data?.updateRoutine.routine)
+
+      setValue(
+        "name",
+        routine.data?.updateRoutine.routine.name || ""
+      )
+      onClose()
+
+      toast({
+        title: "Routine Updated!",
+        status: "success",
+        isClosable: true,
+      })
+    } catch {}
+  }
 
   if (loading) {
     return <LoadingSpinner />
@@ -65,7 +113,6 @@ const RoutinePage: NextPage = () => {
                 Dashboard
               </BreadcrumbLink>
             </BreadcrumbItem>
-
             <BreadcrumbItem>
               <BreadcrumbLink
                 as={Link}
@@ -92,6 +139,7 @@ const RoutinePage: NextPage = () => {
                   variant="link"
                   colorScheme="whatsapp"
                   aria-label="Change Name"
+                  onClick={onOpen}
                 />
               </Tooltip>
             </HStack>
@@ -116,7 +164,10 @@ const RoutinePage: NextPage = () => {
             borderColor="gray.300"
           />
           <TableContainer w="full">
-            <Table variant="striped">
+            <Table
+              variant="striped"
+              size={{ base: "sm", md: "md" }}
+            >
               <Thead>
                 <Tr>
                   <Th>Day</Th>
@@ -141,22 +192,13 @@ const RoutinePage: NextPage = () => {
                             }
                           </Td>
                           <Td>
-                            <HStack>
-                              <Button
-                                size="sm"
-                                colorScheme="whatsapp"
-                                variant="outline"
-                              >
-                                View
-                              </Button>
-                              <Button
-                                size="sm"
-                                colorScheme="messenger"
-                                variant="outline"
-                              >
-                                Edit
-                              </Button>
-                            </HStack>
+                            <Button
+                              size="sm"
+                              colorScheme="whatsapp"
+                              variant="outline"
+                            >
+                              View / Edit
+                            </Button>
                           </Td>
                         </Tr>
                       )
@@ -167,6 +209,60 @@ const RoutinePage: NextPage = () => {
           </TableContainer>
         </VStack>
       </Container>
+      <Drawer
+        isOpen={isOpen}
+        placement="right"
+        onClose={onClose}
+        returnFocusOnClose={false}
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <Flex
+            h="full"
+            flexDir="column"
+            as="form"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <DrawerCloseButton />
+            <DrawerHeader borderBottomWidth="1px">
+              Change routine name
+            </DrawerHeader>
+
+            <DrawerBody>
+              <Box>
+                <FormLabel htmlFor="name">
+                  Routine Name
+                </FormLabel>
+                <Input
+                  id="name"
+                  placeholder="Please enter routine name"
+                  {...register("name")}
+                  minLength={4}
+                  required
+                />
+              </Box>
+            </DrawerBody>
+
+            <DrawerFooter borderTopWidth="1px">
+              <Button
+                variant="outline"
+                mr={3}
+                onClick={onClose}
+              >
+                Cancel
+              </Button>
+              <Button
+                colorScheme="blue"
+                type="submit"
+                isLoading={updateRoutineLoading}
+                loadingText="Updating..."
+              >
+                Submit
+              </Button>
+            </DrawerFooter>
+          </Flex>
+        </DrawerContent>
+      </Drawer>
     </>
   )
 }
