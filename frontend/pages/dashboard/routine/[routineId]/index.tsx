@@ -43,6 +43,7 @@ import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import Navbar from "../../../../components/dashboard/navbar"
 import LoadingSpinner from "../../../../components/loading-spinner"
+import { capitalize } from "../../../../helpers/utils"
 import useGetRoutine, {
   IRoutine,
 } from "../../../../hooks/useGetRoutine"
@@ -183,7 +184,7 @@ const RoutinePage: NextPage = () => {
 
                       return (
                         <Tr key={day}>
-                          <Td>{day.toUpperCase()}</Td>
+                          <Td>{capitalize(day)}</Td>
                           <Td>
                             {
                               (
@@ -197,7 +198,7 @@ const RoutinePage: NextPage = () => {
                             >
                               <Button
                                 size="sm"
-                                colorScheme="whatsapp"
+                                colorScheme="messenger"
                                 variant="outline"
                               >
                                 View / Edit

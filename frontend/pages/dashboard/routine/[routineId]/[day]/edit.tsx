@@ -4,6 +4,12 @@ import {
   ExternalLinkIcon,
 } from "@chakra-ui/icons"
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Box,
   Breadcrumb,
   BreadcrumbItem,
@@ -40,7 +46,7 @@ import {
 import { NextPage } from "next"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 
 import Navbar from "../../../../../components/dashboard/navbar"
 import LoadingSpinner from "../../../../../components/loading-spinner"
@@ -50,18 +56,36 @@ import useGetClasses, {
 import timeFormatter from "../../../../../helpers/timeFormatter"
 import { useForm } from "react-hook-form"
 import useCreateClass from "../../../../../hooks/useCreateClass"
+import { capitalize } from "../../../../../helpers/utils"
+import useClassDelete from "../../../../../hooks/useClassDelete"
 
 const EditPage: NextPage = () => {
   const router = useRouter()
   const routineId = router.query.routineId as string
   const currentDay = router.query.day as string
+  const cancelRef = React.useRef()
 
   const { data, loading, refetch } = useGetClasses(
     routineId,
     currentDay
   )
   const [routine, setRoutine] = useState<IRoutine>()
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const {
+    isOpen: isOpenDrawer,
+    onOpen: onOpenDrawer,
+    onClose: onCloseDrawer,
+  } = useDisclosure()
+
+  const [selectDeleteId, setSelectDeleteId] = useState<
+    string | null
+  >(null)
+
+  const {
+    isOpen: isOpenDialog,
+    onOpen: onOpenDialog,
+    onClose: onCloseDialog,
+  } = useDisclosure()
+
   const [createClass, { loading: createClassLoading }] =
     useCreateClass()
 
@@ -76,17 +100,22 @@ const EditPage: NextPage = () => {
     useForm<ScheduleForm>()
 
   const onSubmit = async (data: ScheduleForm) => {
-    await createClass({
-      variables: { day: currentDay, routineId, ...data },
-    })
-    await refetch()
-    onClose()
+    try {
+      await createClass({
+        variables: { day: currentDay, routineId, ...data },
+      })
+      await refetch()
+      onCloseDrawer()
 
-    setValue("subject", "")
-    setValue("teacherShortName", "")
-    setValue("startTime", "")
-    setValue("endTime", "")
+      setValue("subject", "")
+      setValue("teacherShortName", "")
+      setValue("startTime", "")
+      setValue("endTime", "")
+    } catch {}
   }
+
+  const [classDelete, { loading: classDeleteLoading }] =
+    useClassDelete()
 
   useEffect(() => {
     if (!data) return
@@ -96,6 +125,26 @@ const EditPage: NextPage = () => {
 
   if (loading) {
     return <LoadingSpinner />
+  }
+
+  const selectDelete = (id: string) => {
+    setSelectDeleteId(id)
+    onOpenDialog()
+  }
+
+  const onDelete = async () => {
+    if (!selectDeleteId) return
+
+    try {
+      await classDelete({
+        variables: { id: selectDeleteId, routineId },
+      })
+
+      setSelectDeleteId(null)
+
+      onCloseDialog()
+      refetch()
+    } catch {}
   }
 
   return (
@@ -125,7 +174,7 @@ const EditPage: NextPage = () => {
                 as={Link}
                 href={`/dashboard/routine/${routineId}/${currentDay}/edit`}
               >
-                <Text>{currentDay}</Text>
+                <Text>{capitalize(currentDay)}</Text>
               </BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
@@ -138,7 +187,7 @@ const EditPage: NextPage = () => {
           >
             <HStack>
               <Heading as="h2" fontSize="3xl">
-                {currentDay} - {routine?.name}
+                {capitalize(currentDay)} - {routine?.name}
               </Heading>
             </HStack>
             <Link href={`/r/${routine?.slug}`} passHref>
@@ -201,6 +250,9 @@ const EditPage: NextPage = () => {
                               size="sm"
                               colorScheme="red"
                               variant="outline"
+                              onClick={() =>
+                                selectDelete(classObj.id)
+                              }
                             >
                               Delete
                             </Button>
@@ -217,7 +269,8 @@ const EditPage: NextPage = () => {
             <Button
               leftIcon={<AddIcon />}
               colorScheme="whatsapp"
-              onClick={onOpen}
+              size="sm"
+              onClick={onOpenDrawer}
             >
               Add New Schedule
             </Button>
@@ -226,9 +279,9 @@ const EditPage: NextPage = () => {
       </Container>
 
       <Drawer
-        isOpen={isOpen}
+        isOpen={isOpenDrawer}
         placement="right"
-        onClose={onClose}
+        onClose={onCloseDrawer}
         returnFocusOnClose={false}
       >
         <DrawerOverlay />
@@ -293,7 +346,7 @@ const EditPage: NextPage = () => {
               <Button
                 variant="outline"
                 mr={3}
-                onClick={onClose}
+                onClick={onCloseDrawer}
               >
                 Cancel
               </Button>
@@ -309,6 +362,50 @@ const EditPage: NextPage = () => {
           </Flex>
         </DrawerContent>
       </Drawer>
+
+      <AlertDialog
+        isOpen={isOpenDialog}
+        onClose={onCloseDialog}
+        leastDestructiveRef={
+          cancelRef as any as React.RefObject<HTMLButtonElement>
+        }
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader
+              fontSize="lg"
+              fontWeight="bold"
+            >
+              Delete Class
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure? You can't undo this action
+              afterwards.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button
+                onClick={onCloseDialog}
+                ref={
+                  cancelRef as any as React.RefObject<HTMLButtonElement>
+                }
+              >
+                Cancel
+              </Button>
+              <Button
+                colorScheme="red"
+                onClick={onDelete}
+                ml={3}
+                isLoading={classDeleteLoading}
+                loadingText="Delete"
+              >
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </>
   )
 }
