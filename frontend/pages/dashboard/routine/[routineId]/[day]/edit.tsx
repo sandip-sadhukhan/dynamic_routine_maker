@@ -42,7 +42,10 @@ const EditPage: NextPage = () => {
   const routineId = router.query.routineId as string
   const currentDay = router.query.day as string
 
-  const { data, loading } = useGetClasses(routineId)
+  const { data, loading } = useGetClasses(
+    routineId,
+    currentDay
+  )
   const [routine, setRoutine] = useState<IRoutine>()
 
   useEffect(() => {
@@ -95,7 +98,7 @@ const EditPage: NextPage = () => {
           >
             <HStack>
               <Heading as="h2" fontSize="3xl">
-                Sunday - {routine?.name}
+                {currentDay} - {routine?.name}
               </Heading>
             </HStack>
             <Link href={`/r/${routine?.slug}`} passHref>
@@ -118,53 +121,58 @@ const EditPage: NextPage = () => {
             borderWidth="1.2px"
             borderColor="gray.300"
           />
-          <TableContainer w="full" mt={10}>
-            <Table
-              variant="striped"
-              size={{ base: "sm", md: "md" }}
-            >
-              <Thead>
-                <Tr>
-                  <Th>Class Name</Th>
-                  <Th>Teacher</Th>
-                  <Th>Timing</Th>
-                  <Th>Action</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {routine &&
-                  routine.sundayClasses &&
-                  routine.sundayClasses.map((classObj) => (
-                    <Tr key={classObj.id}>
-                      <Td>{classObj.subject}</Td>
-                      <Td>{classObj.teacherShortName}</Td>
-                      <Td>
-                        {timeFormatter(classObj.startTime)}{" "}
-                        - {timeFormatter(classObj.endTime)}
-                      </Td>
-                      <Td>
-                        <HStack>
-                          <Button
-                            size="sm"
-                            colorScheme="messenger"
-                            variant="outline"
-                          >
-                            Edit
-                          </Button>
-                          <Button
-                            size="sm"
-                            colorScheme="red"
-                            variant="outline"
-                          >
-                            Delete
-                          </Button>
-                        </HStack>
-                      </Td>
-                    </Tr>
-                  ))}
-              </Tbody>
-            </Table>
-          </TableContainer>
+          {routine?.classes.length && (
+            <TableContainer w="full" mt={10}>
+              <Table
+                variant="striped"
+                size={{ base: "sm", md: "md" }}
+              >
+                <Thead>
+                  <Tr>
+                    <Th>Class Name</Th>
+                    <Th>Teacher</Th>
+                    <Th>Timing</Th>
+                    <Th>Action</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {routine &&
+                    routine.classes.map((classObj) => (
+                      <Tr key={classObj.id}>
+                        <Td>{classObj.subject}</Td>
+                        <Td>{classObj.teacherShortName}</Td>
+                        <Td>
+                          {timeFormatter(
+                            classObj.startTime
+                          )}{" "}
+                          -{" "}
+                          {timeFormatter(classObj.endTime)}
+                        </Td>
+                        <Td>
+                          <HStack>
+                            <Button
+                              size="sm"
+                              colorScheme="messenger"
+                              variant="outline"
+                            >
+                              Edit
+                            </Button>
+                            <Button
+                              size="sm"
+                              colorScheme="red"
+                              variant="outline"
+                            >
+                              Delete
+                            </Button>
+                          </HStack>
+                        </Td>
+                      </Tr>
+                    ))}
+                </Tbody>
+              </Table>
+            </TableContainer>
+          )}
+
           <Center py={8} w="full">
             <Button
               leftIcon={<AddIcon />}

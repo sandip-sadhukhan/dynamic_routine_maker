@@ -1,5 +1,6 @@
 import graphene
 from graphene_django import DjangoObjectType
+from routine.helpers import getDayFromString
 from routine.models import Routine, Class
 
 
@@ -32,13 +33,7 @@ class RoutineType(DjangoObjectType):
         fields = ("id", "name", "slug")
 
     get_classes_count = graphene.Field(DayClassesCountType)
-    sunday_classes = graphene.List(ClassType)
-    monday_classes = graphene.List(ClassType)
-    tuesday_classes = graphene.List(ClassType)
-    wednesday_classes = graphene.List(ClassType)
-    thursday_classes = graphene.List(ClassType)
-    friday_classes = graphene.List(ClassType)
-    saturday_classes = graphene.List(ClassType)
+    classes = graphene.List(ClassType, day=graphene.String(required=True))
 
     def resolve_get_classes_count(self, info):
         return {
@@ -51,23 +46,5 @@ class RoutineType(DjangoObjectType):
             "saturday": self.get_classes_by_day(Class.SATURDAY).count(),  # type: ignore
         }
 
-    def resolve_sunday_classes(self, info):
-        return self.get_classes_by_day(Class.SUNDAY)  # type: ignore
-
-    def resolve_monday_classes(self, info):
-        return self.get_classes_by_day(Class.MONDAY)  # type: ignore
-
-    def resolve_tuesday_classes(self, info):
-        return self.get_classes_by_day(Class.TUESDAY)  # type: ignore
-
-    def resolve_wednesday_classes(self, info):
-        return self.get_classes_by_day(Class.WEDNESDAY)  # type: ignore
-
-    def resolve_thursday_classes(self, info):
-        return self.get_classes_by_day(Class.THURSDAY)  # type: ignore
-
-    def resolve_friday_classes(self, info):
-        return self.get_classes_by_day(Class.FRIDAY)  # type: ignore
-
-    def resolve_saturday_classes(self, info):
-        return self.get_classes_by_day(Class.SATURDAY)  # type: ignore
+    def resolve_classes(self, info, day):
+        return self.get_classes_by_day(getDayFromString(day))  # type: ignore

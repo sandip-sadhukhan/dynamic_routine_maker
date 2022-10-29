@@ -11,7 +11,7 @@ export interface IGetClass {
 export interface IRoutine {
   name: string
   slug: string
-  sundayClasses: IGetClass[]
+  classes: IGetClass[]
 }
 
 export interface IData {
@@ -20,14 +20,15 @@ export interface IData {
 
 interface IVariable {
   id: string
+  day: string
 }
 
 const GET_ROUTINE = gql`
-  query ($id: String!) {
+  query ($id: String!, $day: String!) {
     routineById(id: $id) {
       name
       slug
-      sundayClasses {
+      classes(day: $day) {
         id
         subject
         teacherShortName
@@ -38,9 +39,9 @@ const GET_ROUTINE = gql`
   }
 `
 
-const useGetClasses = (id: string) => {
+const useGetClasses = (id: string, day: string) => {
   return useQuery<IData, IVariable>(GET_ROUTINE, {
-    variables: { id },
+    variables: { id, day },
   })
 }
 
