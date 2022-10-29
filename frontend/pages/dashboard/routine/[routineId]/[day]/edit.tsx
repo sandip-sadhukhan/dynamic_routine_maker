@@ -58,6 +58,7 @@ import { useForm } from "react-hook-form"
 import useCreateClass from "../../../../../hooks/useCreateClass"
 import { capitalize } from "../../../../../helpers/utils"
 import useClassDelete from "../../../../../hooks/useClassDelete"
+import useUpdateClass from "../../../../../hooks/useUpdateClass"
 
 const EditPage: NextPage = () => {
   const router = useRouter()
@@ -80,6 +81,10 @@ const EditPage: NextPage = () => {
     string | null
   >(null)
 
+  const [selectEditId, setSelectEditId] = useState<
+    string | null
+  >(null)
+
   const {
     isOpen: isOpenDialog,
     onOpen: onOpenDialog,
@@ -88,6 +93,9 @@ const EditPage: NextPage = () => {
 
   const [createClass, { loading: createClassLoading }] =
     useCreateClass()
+
+  const [updateClass, { loading: updateClassLoading }] =
+    useUpdateClass()
 
   interface ScheduleForm {
     subject: string
@@ -100,18 +108,43 @@ const EditPage: NextPage = () => {
     useForm<ScheduleForm>()
 
   const onSubmit = async (data: ScheduleForm) => {
-    try {
-      await createClass({
-        variables: { day: currentDay, routineId, ...data },
-      })
-      await refetch()
-      onCloseDrawer()
+    if (selectEditId) {
+      try {
+        await updateClass({
+          variables: {
+            id: selectEditId,
+            routineId,
+            ...data,
+          },
+        })
 
-      setValue("subject", "")
-      setValue("teacherShortName", "")
-      setValue("startTime", "")
-      setValue("endTime", "")
-    } catch {}
+        await refetch()
+        onCloseDrawer()
+
+        setValue("subject", "")
+        setValue("teacherShortName", "")
+        setValue("startTime", "")
+        setValue("endTime", "")
+        setSelectEditId(null)
+      } catch {}
+    } else {
+      try {
+        await createClass({
+          variables: {
+            day: currentDay,
+            routineId,
+            ...data,
+          },
+        })
+        await refetch()
+        onCloseDrawer()
+
+        setValue("subject", "")
+        setValue("teacherShortName", "")
+        setValue("startTime", "")
+        setValue("endTime", "")
+      } catch {}
+    }
   }
 
   const [classDelete, { loading: classDeleteLoading }] =
@@ -145,6 +178,33 @@ const EditPage: NextPage = () => {
       onCloseDialog()
       refetch()
     } catch {}
+  }
+
+  const selectEdit = (id: string) => {
+    setSelectEditId(id)
+
+    const classObj = routine?.classes.find(
+      (classObj) => classObj.id === id
+    )
+
+    if (!classObj) return
+
+    setValue("subject", classObj.subject)
+    setValue("teacherShortName", classObj.teacherShortName)
+    setValue("startTime", classObj.startTime)
+    setValue("endTime", classObj.endTime)
+
+    onOpenDrawer()
+  }
+
+  const openCreateClassDialog = () => {
+    onOpenDrawer()
+    setSelectEditId(null)
+
+    setValue("subject", "")
+    setValue("teacherShortName", "")
+    setValue("startTime", "")
+    setValue("endTime", "")
   }
 
   return (
@@ -243,6 +303,9 @@ const EditPage: NextPage = () => {
                               size="sm"
                               colorScheme="messenger"
                               variant="outline"
+                              onClick={() =>
+                                selectEdit(classObj.id)
+                              }
                             >
                               Edit
                             </Button>
@@ -270,7 +333,7 @@ const EditPage: NextPage = () => {
               leftIcon={<AddIcon />}
               colorScheme="whatsapp"
               size="sm"
-              onClick={onOpenDrawer}
+              onClick={openCreateClassDialog}
             >
               Add New Schedule
             </Button>
@@ -353,8 +416,12 @@ const EditPage: NextPage = () => {
               <Button
                 colorScheme="blue"
                 type="submit"
-                isLoading={createClassLoading}
-                loadingText="Creating..."
+                isLoading={
+                  createClassLoading || updateClassLoading
+                }
+                loadingText={
+                  selectEditId ? "Updating" : "Creating"
+                }
               >
                 Submit
               </Button>
