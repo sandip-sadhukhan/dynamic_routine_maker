@@ -4,6 +4,7 @@ import {
   ExternalLinkIcon,
 } from "@chakra-ui/icons"
 import {
+  Box,
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
@@ -11,9 +12,19 @@ import {
   Center,
   Container,
   Divider,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  Flex,
+  FormLabel,
   Heading,
   HStack,
   IconButton,
+  Input,
   Table,
   TableContainer,
   Tbody,
@@ -23,6 +34,7 @@ import {
   Thead,
   Tooltip,
   Tr,
+  useDisclosure,
   VStack,
 } from "@chakra-ui/react"
 import { NextPage } from "next"
@@ -36,17 +48,45 @@ import useGetClasses, {
   IRoutine,
 } from "../../../../../hooks/useGetClasses"
 import timeFormatter from "../../../../../helpers/timeFormatter"
+import { useForm } from "react-hook-form"
+import useCreateClass from "../../../../../hooks/useCreateClass"
 
 const EditPage: NextPage = () => {
   const router = useRouter()
   const routineId = router.query.routineId as string
   const currentDay = router.query.day as string
 
-  const { data, loading } = useGetClasses(
+  const { data, loading, refetch } = useGetClasses(
     routineId,
     currentDay
   )
   const [routine, setRoutine] = useState<IRoutine>()
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [createClass, { loading: createClassLoading }] =
+    useCreateClass()
+
+  interface ScheduleForm {
+    subject: string
+    teacherShortName: string
+    startTime: string
+    endTime: string
+  }
+
+  const { register, handleSubmit, setValue } =
+    useForm<ScheduleForm>()
+
+  const onSubmit = async (data: ScheduleForm) => {
+    await createClass({
+      variables: { day: currentDay, routineId, ...data },
+    })
+    await refetch()
+    onClose()
+
+    setValue("subject", "")
+    setValue("teacherShortName", "")
+    setValue("startTime", "")
+    setValue("endTime", "")
+  }
 
   useEffect(() => {
     if (!data) return
@@ -177,12 +217,98 @@ const EditPage: NextPage = () => {
             <Button
               leftIcon={<AddIcon />}
               colorScheme="whatsapp"
+              onClick={onOpen}
             >
               Add New Schedule
             </Button>
           </Center>
         </VStack>
       </Container>
+
+      <Drawer
+        isOpen={isOpen}
+        placement="right"
+        onClose={onClose}
+        returnFocusOnClose={false}
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <Flex
+            h="full"
+            flexDir="column"
+            as="form"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <DrawerCloseButton />
+            <DrawerHeader borderBottomWidth="1px">
+              Change routine name
+            </DrawerHeader>
+
+            <DrawerBody>
+              <VStack spacing={4} w="100%">
+                <Box w="full">
+                  <FormLabel htmlFor="name">
+                    Subject
+                  </FormLabel>
+                  <Input
+                    placeholder="eg: Biology"
+                    {...register("subject")}
+                    required
+                  />
+                </Box>
+                <Box w="full">
+                  <FormLabel htmlFor="name">
+                    Teacher Short Name
+                  </FormLabel>
+                  <Input
+                    placeholder="eg: PG"
+                    {...register("teacherShortName")}
+                    required
+                  />
+                </Box>
+                <Box w="full">
+                  <FormLabel htmlFor="name">
+                    Start Time
+                  </FormLabel>
+                  <Input
+                    type="time"
+                    {...register("startTime")}
+                    required
+                  />
+                </Box>
+                <Box w="full">
+                  <FormLabel htmlFor="name">
+                    End Time
+                  </FormLabel>
+                  <Input
+                    type="time"
+                    {...register("endTime")}
+                    required
+                  />
+                </Box>
+              </VStack>
+            </DrawerBody>
+
+            <DrawerFooter borderTopWidth="1px">
+              <Button
+                variant="outline"
+                mr={3}
+                onClick={onClose}
+              >
+                Cancel
+              </Button>
+              <Button
+                colorScheme="blue"
+                type="submit"
+                isLoading={createClassLoading}
+                loadingText="Creating..."
+              >
+                Submit
+              </Button>
+            </DrawerFooter>
+          </Flex>
+        </DrawerContent>
+      </Drawer>
     </>
   )
 }

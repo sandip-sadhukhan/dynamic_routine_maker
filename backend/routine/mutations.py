@@ -1,6 +1,7 @@
 import graphene
 from graphql_jwt.decorators import login_required
 
+from routine.helpers import getDayFromString
 from routine.types import RoutineType, ClassType
 from routine.models import Routine, Class
 
@@ -63,7 +64,7 @@ class DeleteRoutine(graphene.Mutation):
 class CreateClass(graphene.Mutation):
     class Arguments:
         routine_id = graphene.String(required=True)
-        day = graphene.Int(required=True)
+        day = graphene.String(required=True)
         start_time = graphene.String(required=True)
         end_time = graphene.String(required=True)
         subject = graphene.String(required=True)
@@ -78,7 +79,7 @@ class CreateClass(graphene.Mutation):
         root,
         info,
         routine_id: str,
-        day: int,
+        day: str,
         start_time: str,
         end_time: str,
         subject: str,
@@ -86,9 +87,11 @@ class CreateClass(graphene.Mutation):
     ):
         routine = Routine.objects.get(pk=routine_id, user=info.context.user)
 
+        dayId = getDayFromString(day)
+
         classObj = Class.objects.create(
             routine=routine,
-            day=day,
+            day=dayId,
             start_time=start_time,
             end_time=end_time,
             subject=subject,
