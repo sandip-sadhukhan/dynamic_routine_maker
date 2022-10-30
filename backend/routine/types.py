@@ -27,6 +27,16 @@ class ClassType(DjangoObjectType):
         )
 
 
+class DayClassesType(graphene.ObjectType):
+    sunday = graphene.List(ClassType)
+    monday = graphene.List(ClassType)
+    tuesday = graphene.List(ClassType)
+    wednesday = graphene.List(ClassType)
+    thursday = graphene.List(ClassType)
+    friday = graphene.List(ClassType)
+    saturday = graphene.List(ClassType)
+
+
 class RoutineType(DjangoObjectType):
     class Meta:
         model = Routine
@@ -34,6 +44,7 @@ class RoutineType(DjangoObjectType):
 
     get_classes_count = graphene.Field(DayClassesCountType)
     classes = graphene.List(ClassType, day=graphene.String(required=True))
+    all_classes = graphene.Field(DayClassesType)
 
     def resolve_get_classes_count(self, info):
         return {
@@ -48,3 +59,14 @@ class RoutineType(DjangoObjectType):
 
     def resolve_classes(self, info, day):
         return self.get_classes_by_day(getDayFromString(day))  # type: ignore
+
+    def resolve_all_classes(self, info):
+        return {
+            "sunday": self.get_classes_by_day(Class.SUNDAY),  # type: ignore
+            "monday": self.get_classes_by_day(Class.MONDAY),  # type: ignore
+            "tuesday": self.get_classes_by_day(Class.TUESDAY),  # type: ignore
+            "wednesday": self.get_classes_by_day(Class.WEDNESDAY),  # type: ignore
+            "thursday": self.get_classes_by_day(Class.THURSDAY),  # type: ignore
+            "friday": self.get_classes_by_day(Class.FRIDAY),  # type: ignore
+            "saturday": self.get_classes_by_day(Class.SATURDAY),  # type: ignore
+        }
