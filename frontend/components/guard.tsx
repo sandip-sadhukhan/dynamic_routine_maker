@@ -8,19 +8,33 @@ import useGetMe from "../hooks/useGetMe"
 interface GuardProps {
   children: JSX.Element
   excludedRoutes?: string[]
+  publicRoute: string
 }
 
 const Guard = ({
   children,
   excludedRoutes,
+  publicRoute,
 }: GuardProps) => {
   const router = useRouter()
   const toast = useToast()
-  const { data: user, loading, error } = useGetMe()
+  const [getMe, { data: user, loading, error, called }] =
+    useGetMe()
   const errors = useReactiveVar(globalErrors)
 
   useEffect(() => {
-    if (loading) return
+    if (!router.pathname.startsWith(publicRoute)) {
+      getMe()
+    }
+  }, [])
+
+  useEffect(() => {
+    if (
+      !called ||
+      loading ||
+      router.pathname.startsWith(publicRoute)
+    )
+      return
 
     if (error && localStorage.getItem("token")) {
       toast({
@@ -31,7 +45,7 @@ const Guard = ({
       localStorage.removeItem("token")
     }
 
-    if (!loading && !user) {
+    if (!user) {
       localStorage.removeItem("token")
     }
 
@@ -61,7 +75,8 @@ const Guard = ({
 
   return (
     <>
-      {(!user &&
+      {(!router.pathname.startsWith(publicRoute) &&
+        !user &&
         !excludedRoutes?.includes(router.pathname)) ||
       loading ? (
         <></>

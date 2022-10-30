@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client"
+import { gql, useLazyQuery } from "@apollo/client"
 
 const GET_ME = gql`
   query {
@@ -10,7 +10,7 @@ const GET_ME = gql`
 `
 
 const useGetMe = () => {
-  return useQuery(GET_ME)
+  return useLazyQuery(GET_ME)
 }
 
 export default useGetMe

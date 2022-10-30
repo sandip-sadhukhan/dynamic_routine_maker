@@ -10,7 +10,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider>
       <ApolloProvider client={client}>
-        <Guard excludedRoutes={["/"]}>
+        <Guard excludedRoutes={["/"]} publicRoute={"/r/"}>
           <>
             <Head>
               <title>

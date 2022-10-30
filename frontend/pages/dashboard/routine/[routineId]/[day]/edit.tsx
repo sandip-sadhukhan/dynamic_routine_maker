@@ -447,7 +447,7 @@ const EditPage: NextPage = () => {
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              Are you sure? You can't undo this action
+              Are you sure? You can&apos;t undo this action
               afterwards.
             </AlertDialogBody>
 

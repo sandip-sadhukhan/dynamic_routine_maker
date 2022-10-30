@@ -59,19 +59,19 @@ const RoutinePage: NextPage = () => {
     useUpdateRoutine()
   const toast = useToast()
 
+  const { register, handleSubmit, setValue } =
+    useForm<IFormData>()
+
   useEffect(() => {
     if (!data) return
 
     setRoutine(data.routineById)
     setValue("name", data.routineById.name || "")
-  }, [data, loading])
+  }, [data, loading, setValue])
 
   interface IFormData {
     name: string
   }
-
-  const { register, handleSubmit, setValue } =
-    useForm<IFormData>()
 
   const onSubmit = async (data: IFormData) => {
     try {
