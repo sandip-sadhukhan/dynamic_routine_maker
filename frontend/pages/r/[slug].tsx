@@ -87,6 +87,7 @@ export const getStaticProps: GetStaticProps = async (
     props: {
       data: data || null,
     },
+    revalidate: 10, // REVALIDATE: remove this line to enable on demand validation
   }
 }
 

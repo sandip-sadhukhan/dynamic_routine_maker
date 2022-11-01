@@ -23,10 +23,6 @@ def revalidate_routine(sender, instance, **kwargs):
     requests.get(url)
 
 
-post_save.connect(revalidate_routine, sender=Routine)
-post_delete.connect(revalidate_routine, sender=Routine)
-
-
 def revalidate_class(sender, instance, **kwargs):
     url = (
         f"{settings.REVALIDATION_BASE_URL}/api/revalidate?"
@@ -37,5 +33,8 @@ def revalidate_class(sender, instance, **kwargs):
     requests.get(url)
 
 
-post_save.connect(revalidate_class, sender=Class)
-post_delete.connect(revalidate_class, sender=Class)
+# REVALIDATE: remove comment to do on demand validation
+# post_save.connect(revalidate_routine, sender=Routine)
+# post_delete.connect(revalidate_routine, sender=Routine)
+# post_save.connect(revalidate_class, sender=Class)
+# post_delete.connect(revalidate_class, sender=Class)
