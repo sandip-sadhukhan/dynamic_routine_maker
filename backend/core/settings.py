@@ -150,3 +150,7 @@ AUTHENTICATION_BACKENDS = [
     "graphql_jwt.backends.JSONWebTokenBackend",
     "django.contrib.auth.backends.ModelBackend",
 ]
+
+# NextJs Revalidation
+REVALIDATION_BASE_URL = env("REVALIDATION_BASE_URL")
+REVALIDATION_SECRET_KEY = env("REVALIDATION_SECRET_KEY")

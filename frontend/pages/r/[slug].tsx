@@ -87,7 +87,6 @@ export const getStaticProps: GetStaticProps = async (
     props: {
       data: data || null,
     },
-    revalidate: 10, // remove this line when you use revalidate
   }
 }
 
