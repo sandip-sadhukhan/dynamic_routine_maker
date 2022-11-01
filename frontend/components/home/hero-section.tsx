@@ -46,12 +46,11 @@ const HeroSection: React.FC<HeroSectionProps> = (
             fontSize="xl"
             color="gray.500"
           >
-            Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Esse enim aliquam similique
-            omnis itaque! Esse voluptatibus non est
-            quibusdam laboriosam eveniet beatae, eius fugit
-            laudantium delectus eaque provident
-            exercitationem. Tenetur!
+            In this website, you will get fully fletch
+            dashboard to create your digital routine. Create
+            your routine, add your classes, and yaah, you
+            got your public routine url, which you can share
+            with your classmates, students or for yourself.
           </Text>
           <HStack mt={6} spacing={4}>
             <Button

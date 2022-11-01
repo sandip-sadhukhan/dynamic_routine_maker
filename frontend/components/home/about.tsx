@@ -20,37 +20,33 @@ const About: React.FC = () => {
       <Heading as="h2" mb={10}>
         About
       </Heading>
-      <SimpleGrid columns={{ base: 1, md: 2 }} gap={10}>
+      <SimpleGrid columns={{ base: 1, md: 2 }}>
         <GridItem>
-          <Flex justifyContent="end">
+          <Flex justifyContent="center">
             <Image
-              src="/hero-image.svg"
+              src="/sandip-sadhukhan.webp"
               alt="Hero Image"
-              height="300px"
-              width="400px"
+              height="200px"
+              width="200px"
+              style={{ borderRadius: "50%" }}
             />
           </Flex>
         </GridItem>
         <GridItem>
-          <Text textAlign="justify" color="gray.500">
-            Lorem ipsum dolor sit amet, consectetur
-            adipisicing elit. Molestias fuga rem cupiditate
-            facere obcaecati quos fugit odio ullam, culpa
-            veritatis maiores mollitia est quasi laudantium
-            doloremque debitis, quibusdam, blanditiis
-            similique accusantium. Dolor tenetur autem iste
-            sit sint maiores, blanditiis magnam sapiente?
-            Voluptas alias dolores et excepturi nostrum
-            officiis ex dolorem eos aspernatur nulla
-            nesciunt minus asperiores quasi tempora,
-            pariatur accusantium neque ab doloremque, fugit
-            error fugiat exercitationem numquam. Accusantium
-            aperiam consequatur veniam debitis itaque, fugit
-            incidunt fugiat eos nemo eligendi alias aliquam?
-            Iste fugit atque perferendis. Voluptate
-            repellendus commodi dolorum ex nam, obcaecati
-            dolorem aspernatur. Incidunt veniam eum dolor
-            cumque?
+          <Text textAlign="justify" fontSize="lg">
+            I'm a full stack web developer. I am passionate
+            about learning new things and creating projects.
+            I completed my btech in Computer science and
+            engineering from Bengal college of engineering
+            and technology, durgapur with 9.28 GPA. My key
+            skills are Html, CSS, JavaScript, Typescript,
+            Bootstrap, React, Next Js, Chakra UI, Django,
+            Django Rest Framework, SQLite, PostgreSQL and
+            Python. I Developed many websites and software.
+            Check out my GitHub account.
+            github.com/sandippakhanna . Want to contact me?
+            drop a message or mail me at
+            sandip.sendme@gmail.com.
           </Text>
         </GridItem>
       </SimpleGrid>

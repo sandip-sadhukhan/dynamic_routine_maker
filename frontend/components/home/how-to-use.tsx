@@ -20,13 +20,25 @@ const HowToUse: React.FC = () => {
       </Heading>
       <SimpleGrid columns={{ base: 1, md: 3 }} gap={10}>
         <GridItem>
-          <HowToUseBox />
+          <HowToUseBox
+            title="SignUp"
+            body="Its take less than a minute to signup to our portal. Signup by clicking the above buttons."
+            image="/signup.svg"
+          />
         </GridItem>
         <GridItem>
-          <HowToUseBox />
+          <HowToUseBox
+            title="Create Routine"
+            body="You can easily create your routine, and add classes by your dedicated easy to use dashboard."
+            image="/add-routine.svg"
+          />
         </GridItem>
         <GridItem>
-          <HowToUseBox />
+          <HowToUseBox
+            title="Publish to the internet"
+            body="You will get your public routine link, which you can share with your students or classmates."
+            image="/share.svg"
+          />
         </GridItem>
       </SimpleGrid>
     </Container>

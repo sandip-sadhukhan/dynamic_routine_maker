@@ -7,14 +7,24 @@ import {
 import Image from "next/image"
 import React from "react"
 
-const HowToUseBox: React.FC = () => {
+interface HowToUseBoxProps {
+  title: string
+  body: string
+  image: string
+}
+
+const HowToUseBox: React.FC<HowToUseBoxProps> = ({
+  title,
+  body,
+  image,
+}) => {
   const boxBg = useColorModeValue("blue.50", "gray.700")
 
   return (
     <Box shadow="base" bg={boxBg} p={10} rounded="base">
       <Image
-        src="/hero-image.svg"
-        alt="Hero Image"
+        src={image}
+        alt={title}
         height="200px"
         width="300px"
       />
@@ -22,13 +32,12 @@ const HowToUseBox: React.FC = () => {
         as="h3"
         fontSize="2xl"
         textAlign="center"
-        mb={4}
+        my={4}
       >
-        SignUp
+        {title}
       </Heading>
       <Text textAlign="justify" color="gray.500">
-        Lorem ipsum dolor, sit amet consectetur adipisicing
-        elit. Aliquid, similique.
+        {body}
       </Text>
     </Box>
   )
