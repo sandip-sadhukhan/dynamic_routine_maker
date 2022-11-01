@@ -59,6 +59,7 @@ import useCreateClass from "../../../../../hooks/useCreateClass"
 import { capitalize } from "../../../../../helpers/utils"
 import useClassDelete from "../../../../../hooks/useClassDelete"
 import useUpdateClass from "../../../../../hooks/useUpdateClass"
+import Head from "next/head"
 
 const EditPage: NextPage = () => {
   const router = useRouter()
@@ -209,6 +210,9 @@ const EditPage: NextPage = () => {
 
   return (
     <>
+      <Head>
+        <title>Dashboard | Dynamic Routine Maker</title>
+      </Head>
       <Navbar />
       <Container maxW="container.md" centerContent>
         <VStack align="start" w="full" my={8}>

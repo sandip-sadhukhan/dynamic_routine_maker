@@ -7,6 +7,7 @@ import HowToUse from "../components/home/how-to-use"
 import LoginModal from "../components/home/login-modal"
 import SignUpModal from "../components/home/signup-modal"
 import Navbar from "../components/home/navbar"
+import Head from "next/head"
 
 const Home: NextPage = () => {
   const {
@@ -23,6 +24,11 @@ const Home: NextPage = () => {
 
   return (
     <>
+      <Head>
+        <title>
+          Dynamic Routine Maker | Make your routine digital
+        </title>
+      </Head>
       <Navbar
         loginOnOpen={loginOnOpen}
         signUpOnOpen={signUpOnOpen}

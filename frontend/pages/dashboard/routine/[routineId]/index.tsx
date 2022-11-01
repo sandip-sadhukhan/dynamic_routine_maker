@@ -37,6 +37,7 @@ import {
   VStack,
 } from "@chakra-ui/react"
 import type { NextPage } from "next"
+import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -102,6 +103,9 @@ const RoutinePage: NextPage = () => {
 
   return (
     <>
+      <Head>
+        <title>Dashboard | Dynamic Routine Maker</title>
+      </Head>
       <Navbar />
       <Container maxW="container.md" centerContent>
         <VStack align="start" w="full" my={8}>

@@ -1,16 +1,22 @@
+import { VStack } from "@chakra-ui/react"
 import type {
   GetStaticPaths,
   GetStaticProps,
   NextPage,
 } from "next"
+import Head from "next/head"
 import NotFound from "../../components/not-found"
+import Footer from "../../components/public/footer"
+import Navbar from "../../components/public/navbar"
+import Routine from "../../components/public/routine"
 import useGetAllPublicRoutines from "../../hooks/useGetAllPublicRoutines"
 import useGetPublicRoutine, {
+  IClass,
   IData,
 } from "../../hooks/useGetPublicRoutine"
 
 interface PublicRoutineProps {
-  data: IData | null
+  data: { data: IData } | null
 }
 
 const PublicRoutine: NextPage<PublicRoutineProps> = ({
@@ -20,7 +26,50 @@ const PublicRoutine: NextPage<PublicRoutineProps> = ({
     return <NotFound />
   }
 
-  return <div>PublicRoutine: {JSON.stringify(data)}</div>
+  const routine = data.data.publicRoutine
+  const today = new Date()
+  const todayWeekday = today.getDay()
+  const DayToStringList = [
+    "sunday",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+  ]
+
+  const todayString = DayToStringList[todayWeekday]
+  let schedules: IClass[] = (routine.allClasses as any)[
+    todayString
+  ]
+
+  schedules = schedules.filter((schedule) => {
+    const hour = schedule.endTime.split(":")[0]
+    const minute = schedule.endTime.split(":")[1]
+    const timeInMinute =
+      parseInt(hour) * 60 + parseInt(minute)
+
+    const todayInMinute =
+      today.getHours() * 60 + today.getMinutes()
+
+    return timeInMinute >= todayInMinute
+  })
+
+  return (
+    <>
+      <Head>
+        <title>
+          {`${routine.name} | Dynamic Routine Maker`}
+        </title>
+      </Head>
+      <VStack w="full">
+        <Navbar text="Upcoming Classes" />
+        <Routine schedules={schedules} />
+        <Footer />
+      </VStack>
+    </>
+  )
 }
 
 export const getStaticProps: GetStaticProps = async (

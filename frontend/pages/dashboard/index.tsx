@@ -23,6 +23,7 @@ import {
   VStack,
 } from "@chakra-ui/react"
 import type { NextPage } from "next"
+import Head from "next/head"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import Navbar from "../../components/dashboard/navbar"
@@ -80,6 +81,9 @@ const HomeDashboard: NextPage = () => {
 
   return (
     <>
+      <Head>
+        <title>Dashboard | Dynamic Routine Maker</title>
+      </Head>
       <Navbar />
       <Container maxW="container.md" centerContent>
         {routines.length > 0 ? (

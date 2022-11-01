@@ -13,10 +13,6 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Guard excludedRoutes={["/"]} publicRoute={"/r/"}>
           <>
             <Head>
-              <title>
-                Dynamic Routine Maker | Make your routine
-                digital
-              </title>
               <meta
                 name="description"
                 content="In this website, you can create your routine and share it with your classmate"

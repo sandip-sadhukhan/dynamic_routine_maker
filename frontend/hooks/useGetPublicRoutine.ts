@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client"
 import client from "../constants/apollo-client-server-config"
 
-export interface IRoutine {
+export interface IClass {
   id: string
   subject: string
   teacherShortName: string
@@ -9,18 +9,21 @@ export interface IRoutine {
   endTime: string
 }
 
-export interface IData {
-  publicRoutine: {
-    allClasses: {
-      sunday: IRoutine[]
-      monday: IRoutine[]
-      tuesday: IRoutine[]
-      wednesday: IRoutine[]
-      thursday: IRoutine[]
-      friday: IRoutine[]
-      saturday: IRoutine[]
-    }
+export interface IRoutine {
+  name: string
+  allClasses: {
+    sunday: IClass[]
+    monday: IClass[]
+    tuesday: IClass[]
+    wednesday: IClass[]
+    thursday: IClass[]
+    friday: IClass[]
+    saturday: IClass[]
   }
+}
+
+export interface IData {
+  publicRoutine: IRoutine
 }
 
 interface IVariable {
@@ -30,6 +33,7 @@ interface IVariable {
 const GET_PUBLIC_ROUTINE = gql`
   query ($slug: String!) {
     publicRoutine(slug: $slug) {
+      name
       allClasses {
         sunday {
           id
