@@ -33,8 +33,8 @@ def revalidate_class(sender, instance, **kwargs):
     requests.get(url)
 
 
-# REVALIDATE: remove comment to do on demand validation
-# post_save.connect(revalidate_routine, sender=Routine)
-# post_delete.connect(revalidate_routine, sender=Routine)
-# post_save.connect(revalidate_class, sender=Class)
-# post_delete.connect(revalidate_class, sender=Class)
+# REVALIDATE: comment out to do off demand validation
+post_save.connect(revalidate_routine, sender=Routine)
+post_delete.connect(revalidate_routine, sender=Routine)
+post_save.connect(revalidate_class, sender=Class)
+post_delete.connect(revalidate_class, sender=Class)

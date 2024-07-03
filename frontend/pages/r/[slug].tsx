@@ -81,13 +81,13 @@ export const getStaticProps: GetStaticProps = async (
 
   try {
     data = await useGetPublicRoutine(slug)
-  } catch {}
+  } catch { }
 
   return {
     props: {
       data: data || null,
     },
-    revalidate: 10, // REVALIDATE: remove this line to enable on demand validation
+    // revalidate: 10, // REVALIDATE: uncomment this line to disable on demand validation
   }
 }
 
